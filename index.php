@@ -21,7 +21,7 @@ if (isset($_SESSION['email'])) {
     </head>
     <body>
          <?php
-        include 'includes/header.php';
+        // include 'includes/header.php';
         ?>
         
         <div id="content">
