@@ -1,5 +1,4 @@
-name: Deploy to EC2
-
+name: CI/CD Pipeline - Production
 on:
   push:
     branches: [ main ]
@@ -8,30 +7,76 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
-    - name: 📥 Checkout code
+    - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: 🔧 Setup PHP
+    - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
         php-version: '8.2'
 
-    - name: ✅ Validate PHP Syntax
+    - name: Validate PHP Syntax
       run: |
-        find . -name "*.php" -exec php -l {} \; || true
+        echo "=== CHECKING PHP SYNTAX ==="
+        find . -name "*.php" -exec php -l {} \;
+        echo "✅ PHP check completed!"
+    - name: Test HTML Output and Validation
+      run: |
+          echo "=== TESTING HTML SYNTAX ==="
 
-  deploy:
+          # Kiểm tra trực tiếp trong file PHP
+          if grep -q "<title>.*/title>" index.php &&  ! grep -q "<title>.*</title>" index.php; then
+           echo "❌ LỖI: Thẻ title không đóng đúng trong index.php"
+           grep "<title>" index.php
+           exit 1
+          fi
+
+          # Kiểm tra các thẻ HTML cơ bản
+          if ! grep -q "<html" index.php || ! grep -q "</html>" index.php; then
+          echo "❌ LỖI: Thiếu thẻ html"
+          exit 1
+          fi
+
+          echo "✅ HTML syntax validation passed!"
+
+  deploy-to-production:
     runs-on: ubuntu-latest
     needs: build-and-test
     steps:
-    - name: 📥 Checkout code
+    - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: 🚀 Deploy to EC2
-      uses: easingthemes/ssh-deploy@main
+    - name: Deploy to EC2
       env:
-        SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-        REMOTE_HOST: ${{ secrets.EC2_HOST }}
-        REMOTE_USER: ${{ secrets.EC2_USER }}
-        TARGET: /var/www/html/
-        EXCLUDE: '/node_modules/'
+        EC2_HOST: ${{ secrets.EC2_HOST }}
+        EC2_USER: ${{ secrets.EC2_USER }}
+        SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+      run: |
+        echo "🚀 STARTING PRODUCTION DEPLOYMENT..."
+        
+        # Tạo SSH key file
+        echo "$SSH_KEY" > private_key.pem
+        chmod 600 private_key.pem
+        
+        # Deploy commands
+        ssh -o StrictHostKeyChecking=no -i private_key.pem $EC2_USER@$EC2_HOST "
+          echo '=== 🎉 PRODUCTION DEPLOYMENT ==='
+          echo '📦 Pulling latest code...'
+          cd /var/www/html
+          sudo git fetch origin
+          sudo git reset --hard origin/main
+          echo '🔧 Setting permissions...'
+          sudo chown -R ubuntu:ubuntu /var/www/html
+          sudo chmod -R 755 /var/www/html
+          echo '🔄 Restarting web server...'
+          sudo systemctl restart apache2
+          echo '✅ Deployment completed!'
+          echo '🌐 Website: http://$EC2_HOST'
+          echo '🕒 Deployed at: $(date)'
+        "
+        
+        # Cleanup
+        rm -f private_key.pem
+        
+        echo "🎉 PRODUCTION DEPLOYMENT SUCCESSFUL!"
+        echo "📊 Live at: http://$EC2_HOST"
