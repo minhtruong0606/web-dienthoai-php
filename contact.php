@@ -23,7 +23,7 @@
         <div class="container"><br><br><br><br>
 			<div class="row">
 				<div class="col-sm-10">
-				  <h1>LIVE SUPPORT</h1>
+				  <h1>LIVE SUPPORT 24/7</h1>
 				  <h3>24 hours|7 days a week| 365 days a year Live Technical Support</h3>
 				  <div>
 					 <p class = "text-justify">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters. There are many variations of passages of Lorel Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.</p>
