@@ -5,7 +5,7 @@ on:
   push:
     branches: [ main ]
     paths: 
-      - 'E-Commerce-1-Website-PHP-MYSQL-main/**'
+      - 'web-dienthoai-php/**'
 
 jobs:
   deploy-web2:
@@ -30,7 +30,7 @@ jobs:
               listen 80;
               server_name _;
               
-              root /var/www/html/E-Commerce-1-Website-PHP-MYSQL-main;
+              root /var/www/html/web-dienthoai-php;
               index index.php index.html index.htm;
 
               location / {
@@ -52,4 +52,4 @@ jobs:
           sudo systemctl reload nginx
           
           echo "✅ Web2 configured!"
-          echo "🌐 Web2 URL: http://${{ secrets.EC2_HOST }}/E-Commerce-1-Website-PHP-MYSQL-main/"
+          echo "🌐 Web2 URL: http://${{ secrets.EC2_HOST }}/web-dienthoai-php/"
