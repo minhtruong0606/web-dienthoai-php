@@ -50,6 +50,23 @@ jobs:
         EC2_USER: ${{ secrets.EC2_USER }}
         SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
       run: |
+        echo "🔧 Debug: Checking variables..."
+        # Kiểm tra xem các biến có bị rỗng không
+        if [ -z "$EC2_USER" ]; then
+          echo "❌ LỖI: Secret EC2_USER bị trống."
+          exit 1
+        fi
+        if [ -z "$EC2_HOST" ]; then
+          echo "❌ LỖI: Secret EC2_HOST bị trống."
+          exit 1
+        fi
+        if [ -z "$SSH_KEY" ]; then
+          echo "❌ LỖI: Secret EC2_SSH_KEY bị trống."
+          exit 1
+        fi
+        
+        echo "✅ Variables loaded. User: $EC2_USER, Host: $EC2_HOST"
+
         echo "🔧 Debug: Testing SSH connection..."
         echo "$SSH_KEY" > private_key.pem
         chmod 600 private_key.pem
