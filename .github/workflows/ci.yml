@@ -66,8 +66,8 @@ jobs:
           sudo git fetch origin
           sudo git reset --hard origin/main
           echo '🔧 Setting permissions...'
-          sudo chown -R ubuntu:ubuntu /var/www/html
-          sudo chmod -R 755 /var/www/html
+          sudo chown -R ubuntu:ubuntu /var/www/html/webdienthoai-php
+          sudo chmod -R 755 /var/www/html/webdienthoai-php
           echo '🔄 Restarting web server...'
           sudo systemctl restart apache2
           echo '✅ Deployment completed!'
