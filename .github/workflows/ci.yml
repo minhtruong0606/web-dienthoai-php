@@ -79,8 +79,8 @@ jobs:
           echo '📦 Pulling latest code...'
           cd /var/www/html/webdienthoai-php
           sudo git pull origin main
-          sudo chown -R ubuntu:ubuntu /var/www/html/webdienthoai-php
-          sudo chmod -R 755 /var/www/html/webdienthoai-php
+          sudo chown -R ubuntu:ubuntu /var/www/html/web-dienthoai-php
+          sudo chmod -R 755 /var/www/html/web-dienthoai-php
           sudo systemctl restart apache2
           echo '✅ Deployment completed!'
         "
