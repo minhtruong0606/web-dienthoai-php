@@ -7,8 +7,8 @@
 			?>
 				<div class="col-sm-2 col-sm-offset-3">
 				  <h3>Information</h3>
-					<p><a href="about.php"><span style="color:white">About Us</span></a></p>
-					<p><a href="contact.php"><span style="color:white">Contact Us</span></a></p>
+					<p><a href="about.php"><span style="color:white">Ve chung toi</span></a></p>
+					<p><a href="contact.php"><span style="color:white">Lien he</span></a></p>
 				</div>
 				<div class="col-sm-3 col-sm-offset-2">
 				  <h3>Contact Us</h3>
